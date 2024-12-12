@@ -15,10 +15,10 @@ export default async function getProducts(req: Request, res: Response) {
   }
   const { page, category, search, limit } = req.body;
   console.log("req.body", req.body);
-  const searchString = req.body.search || "";
-  const categoryString = req.body.category || "";
-  const pageNumber: number = Number(req.body.page as string) || 1;
-  const limitNumber: number = Number(req.body.limit as string) || 10;
+  const searchString = search || "";
+  const categoryString = category || "";
+  const pageNumber: number = Number(page as string) || 1;
+  const limitNumber: number = Number(limit as string) || 10;
   console.log("pageNumber", pageNumber, "limitNumber", limitNumber);
   console.log("searchString", searchString);
   console.log("categoryString", categoryString);

@@ -11,43 +11,47 @@ export default async (req: Request, res: Response) => {
     return res.status(405).json({ message: "Method not allowed" });
   }
   console.log("signin in progress...");
-
-  const { email, password } = req.body;
+  let { email, password, token } = req.body;
 
   try {
+    //if token is provided, decode it and get email and password for session authentication
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+        email: string;
+        password: string;
+      };
+
+      if (!decoded.email || !decoded.password) {
+        return res.status(400).json({ message: "Invalid token" });
+      }
+      email = decoded.email;
+      password = decoded.password;
+    }
+
     if (!email || !password) {
       return res
         .status(400)
         .json({ message: "Email and password are required" });
     }
-
     const existingUser = await User.findOne({ email });
-    console.log("existingUser", existingUser);
+
     if (!existingUser) {
-      console.log("User not found");
       return res.status(400).json({ message: "User not found" });
     }
-    const isPasswordCorrect: boolean = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
-    console.log("isPasswordCorrect", isPasswordCorrect);
+    const isPasswordCorrect: boolean =
+      (await bcrypt.compare(password, existingUser.password)) ||
+      password === existingUser.password;
     if (!isPasswordCorrect) {
-      console.log("Invalid password");
       return res.status(400).json({ message: "Invalid password" });
     }
-    const token = jwt.sign(
-      { userId: existingUser._id, email: existingUser.email },
+    const resToken = jwt.sign(
+      { password: existingUser.password, email: existingUser.email },
       process.env.JWT_SECRET as string,
       { expiresIn: "24h" }
     );
-    console.log("token", token);
-    console.log("signin success", existingUser);
-    return res.status(200).json({
-      message: "User logged in successfully",
-      user: existingUser,
-      token,
-    });
+    console.log("resToken", resToken);
+    console.log("existingUser", existingUser);
+    return res.status(200).json({ user: existingUser, token: resToken });
   } catch (error) {
     return res
       .status(500)
