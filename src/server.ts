@@ -22,7 +22,9 @@ app.listen(PORT, () => {
 
 // app.use("/api", signin);
 // app.use("/api", signup);
-
+app.get("/api/test", (req, res) => {
+  res.send("API is running...");
+});
 app.post("/api/signin", signinController);
 app.post("/api/signup", signupController);
 app.post("/api/products", getProducts);
