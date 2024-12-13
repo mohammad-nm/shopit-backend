@@ -7,7 +7,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://shopit-backend-one.vercel.app",
+    origin: "https://shopit-tau.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
