@@ -12,7 +12,6 @@ export default async (req: Request, res: Response) => {
   }
   console.log("signin in progress...");
   let { email, password, token } = req.body;
-
   try {
     //if token is provided, decode it and get email and password for session authentication
     if (token) {
@@ -44,13 +43,12 @@ export default async (req: Request, res: Response) => {
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Invalid password" });
     }
-    const resToken = jwt.sign(
+    const resToken: string = jwt.sign(
       { password: existingUser.password, email: existingUser.email },
       process.env.JWT_SECRET as string,
       { expiresIn: "24h" }
     );
-    console.log("resToken", resToken);
-    console.log("existingUser", existingUser);
+
     return res.status(200).json({ user: existingUser, token: resToken });
   } catch (error) {
     return res

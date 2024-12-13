@@ -1,15 +1,18 @@
 import dotenv from "dotenv";
 import connectDB from "./config/db";
 import app from "./app";
-import signin from "./routes/api/signin";
-import signup from "./routes/api/signup";
 import signinController from "./controllers/signinController";
 import signupController from "./controllers/signupController";
-import getProducts from "./controllers/productsController";
+import getProducts, {
+  getProductById,
+  getProductsByIds,
+} from "./controllers/productsController";
+import cartUpdate from "./controllers/cartUpdate";
+
 // import { getProductById } from "./controllers/productsController";
 dotenv.config();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 connectDB();
 
@@ -23,4 +26,6 @@ app.listen(PORT, () => {
 app.post("/api/signin", signinController);
 app.post("/api/signup", signupController);
 app.post("/api/products", getProducts);
-// app.get("/api/product/:id", getProductById);
+app.post("/api/product", getProductById);
+app.post("/api/cart", cartUpdate);
+app.post("/api/products/ids", getProductsByIds);

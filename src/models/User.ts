@@ -4,7 +4,7 @@ interface IUser extends Document {
   email: string;
   password: string;
   likes: string[];
-  cart: string[];
+  cart: { productId: string; quantity: number }[];
   purchases: string[];
   moreInfo: {
     name: string;
@@ -18,7 +18,7 @@ const UserSchema = new Schema<IUser>({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   likes: { type: [String], default: [] },
-  cart: { type: [String], default: [] },
+  cart: { type: [{ productId: String, quantity: Number }], default: [] },
   purchases: { type: [String], default: [] },
   moreInfo: {
     name: { type: String, default: "" },

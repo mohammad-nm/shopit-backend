@@ -12,9 +12,7 @@ export default async (req: Request, res: Response) => {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
-
   const { email, password } = req.body;
-
   try {
     if (!email || !password) {
       return res
@@ -33,9 +31,9 @@ export default async (req: Request, res: Response) => {
     const token = jwt.sign(
       { userId: newUser._id, email: newUser.email },
       process.env.JWT_SECRET as string,
-      { expiresIn: "1h" }
+      { expiresIn: "24h" }
     );
-    console.log("signup success", newUser);
+
     res.status(200).json({ user: newUser, token });
   } catch (error) {
     res.status(500).json({ message: "Internal server error", error: error });
