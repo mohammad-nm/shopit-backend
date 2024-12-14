@@ -2,9 +2,9 @@
   "name": "shopit-backend",
   "version": "1.0.0",
   "description": "Backend for ShopIt - an e-commerce app",
-  "main": "dist/server.js",
+  "main": "src/server.ts",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node src/server.ts",
     "dev": "nodemon src/server.ts",
     "build": "tsc",
     "test": "jest",
@@ -17,7 +17,7 @@
     "express",
     "mongodb"
   ],
-  "author": "Your Name",
+  "author": "Mohammad Nickmagham",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
