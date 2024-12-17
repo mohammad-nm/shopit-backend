@@ -17,14 +17,7 @@ const app = express();
 // Enable CORS for your frontend (Vercel URL)
 app.use(
   cors({
-    origin: "https://shopit-tau.vercel.app", // Your frontend URL
-    methods: "GET,POST",
-    allowedHeaders: "Content-Type,Authorization",
-  })
-);
-app.use(
-  cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://shopit-tau.vercel.app"], // Your  frontend URL
     methods: "GET,POST",
     allowedHeaders: "Content-Type,Authorization",
   })
