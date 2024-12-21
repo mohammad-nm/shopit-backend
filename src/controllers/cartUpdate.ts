@@ -1,16 +1,12 @@
 import { Request, Response } from "express";
 import Product from "../models/Product";
 import User from "../models/User";
-
-export default async function cartUpdate(req: Request, res: Response) {
+import jwt from "jsonwebtoken";
+export async function cartUpdate(req: Request, res: Response) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
-  if (
-    !req.body.userId ||
-    !req.body.productId ||
-    typeof req.body.quantity !== "number"
-  ) {
+  if (!req.body.productId || typeof req.body.quantity !== "number") {
     return res.status(400).json({ message: "Invalid request" });
   }
   const { userId, productId, quantity } = req.body;
@@ -53,3 +49,23 @@ export default async function cartUpdate(req: Request, res: Response) {
   //returning the updated cart
   return res.status(200).json({ message: "Cart updated", cart: user.cart });
 }
+
+export const newCart = async (req: Request, res: Response) => {
+  const { cart, jwt: jwtToken } = req.body;
+  if (!cart || !jwtToken) {
+    return res.status(400).json({ message: `cart: ${cart}, jwt: ${jwtToken}` });
+  }
+  console.log(cart, jwtToken);
+  const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET as string);
+  console.log(decoded);
+  const userId = (decoded as { userId: string }).userId;
+  console.log(userId);
+  const user = await User.findById(userId);
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  user.cart = cart;
+  await user.save();
+  return res.status(200).json({ cart: user.cart });
+};

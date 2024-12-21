@@ -8,16 +8,22 @@ import getProducts, {
   getProductById,
   getProductsByIds,
 } from "./controllers/productsController";
-import cartUpdate from "./controllers/cartUpdate";
+import { cartUpdate, newCart } from "./controllers/cartUpdate";
+import {
+  addToWishlist,
+  clearWishlist,
+  removeFromWishlist,
+  getWishlist,
+} from "./controllers/wishlistController";
 
 dotenv.config();
 
 const app = express();
 
-// Enable CORS for your frontend (Vercel URL)
+// Enable CORS for your frontend (Vercel URL) and localhost
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://shopit-tau.vercel.app"], // Your  frontend URL
+    origin: ["http://localhost:3000", "https://shopit-tau.vercel.app"], // Your frontend URL
     methods: "GET,POST",
     allowedHeaders: "Content-Type,Authorization",
   })
@@ -38,6 +44,13 @@ app.post("/api/products", getProducts);
 app.post("/api/product", getProductById);
 app.post("/api/cart", cartUpdate);
 app.post("/api/products/ids", getProductsByIds);
-
+app.post("/api/wishlist/add", addToWishlist);
+app.post("/api/wishlist/remove", removeFromWishlist);
+app.post("/api/wishlist/get", getWishlist);
+app.post("/api/wishlist/clear", clearWishlist);
+app.post("/api/cart/new", newCart);
+app.listen(5000, () => {
+  console.log("Server is running on port 5000");
+});
 // Export the app to be handled by Vercel
 export default app;

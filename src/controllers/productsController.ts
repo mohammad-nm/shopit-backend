@@ -72,6 +72,7 @@ export async function getProductsByIds(req: Request, res: Response) {
     return res.status(405).json({ message: "Method not allowed" });
   }
   const productIds = req.body.ids;
+  console.log(productIds);
 
   try {
     const products = await Product.find({ _id: { $in: productIds } });
