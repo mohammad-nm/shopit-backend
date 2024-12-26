@@ -14,6 +14,7 @@ import {
   clearWishlist,
   removeFromWishlist,
   getWishlist,
+  UpdateWishlistAfterLogin,
 } from "./controllers/wishlistController";
 
 dotenv.config();
@@ -49,6 +50,8 @@ app.post("/api/wishlist/remove", removeFromWishlist);
 app.post("/api/wishlist/get", getWishlist);
 app.post("/api/wishlist/clear", clearWishlist);
 app.post("/api/cart/new", newCart);
+app.post("/api/wishlist/update", UpdateWishlistAfterLogin);
+
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });
